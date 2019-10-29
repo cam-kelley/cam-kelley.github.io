@@ -11,9 +11,7 @@
     <div class="wrapper">
       <div class="header">UMD Bus Routes</div>
       <button class="button" onclick="loadData()">Load Some JSON</button>
-      <ul class="content">
-        <li>Bus data will go here</li>
-      </ul>
+      <div class="content"></div>
       <div class="footer"></div>
     </div>
   </div>
@@ -22,22 +20,15 @@
       fetch('https://api.umd.io/v0/bus/routes')
         .then(res => res.json())
         .then(res => res.map(bus => bus.route_id + " " + bus.title))
-        .then(res => content = document.querySelector(".content"))
-        .then(res => content.innerHTML = "")
-        .then(routes => {
-          for (var i in routes) {
-            routes += document.createElement("<li>res</li>");
+        .then(res => {
+          const routes = document.querySelector(".content");
+          routes.innerHTML = "";
+          for (var i = 0; i < res.length; i++) {
+            let li = document.createElement("li");
+            li.innerText = li.innerHTML + res[i];
+            routes.appendChild(li);
           }
         })
-
-        /*.then(routes => {
-          let el = document.createElement("li");
-          el.innerText = routes;
-          content.appendChild(el);
-          })
-
-          //return res;*/
-        
         .then(data => document.querySelector(".content").innerText = data);
     }
   </script>
