@@ -1,5 +1,5 @@
-const express = require('express');
-const fetch = require('node-fetch');
+const express = require("express");
+const fetch = require("node-fetch");
 
 const app = express();
 const port = 3000;
@@ -35,23 +35,33 @@ app.use(express.json());
  *  - Express: app.use()
  *    https://expressjs.com/en/4x/api.html#app.use
  */
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 // this is a single route, in the simplest possible format
 // the simplest format is not necessarily the best one.
 // this is, right now, an introduction to Callback Hell
 // but it is okay for a first-level example
-app.get('/api', (req, res) => {
-  const baseURL = 'https://api.umd.io/v0/courses/list';
+app.get("/api", (req, res) => {
+  const baseURL = "https://api.umd.io/v0/courses/list";
   fetch(baseURL)
-    .then((r) => r.json())
-    .then((data) => {
-      console.log(r.filter(/* something that gets items that include "INST"*/));
+    .then(r => r.json())
+    .then(r => r.map(course => course.course_id + ": " + course.name))
+    /*.then(r => {
+      const courses = document.querySelector(".content");
+      courses.innerHTML = "";
+      for (var i = 0; i < r.length; i++) {
+        let li = document.createElement("li");
+        li.innerText = li.innerHTML + r[i];
+        courses.appendChild(li);
+      }
+    })*/
+    .then(data => {
+      console.log(data);
       res.send({ data: data });
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err);
-      res.redirect('/error');
+      res.redirect("/error");
     });
 });
 
